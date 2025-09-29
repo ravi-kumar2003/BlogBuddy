@@ -11,7 +11,7 @@ import { useAppContext } from "../context/AppContext";
 
 export default function Blog() {
   const { id } = useParams();
-  console.log("Blog page received ID from URL:", id); 
+  console.log("Blog page received ID from URL:", id);
 
   const { axios } = useAppContext();
 
@@ -24,9 +24,7 @@ export default function Blog() {
     try {
       const { data } = await axios.get(`/api/blog/${id}`);
       console.log("Blog API response:", data);
-      data.success
-        ? setData(data.blogs[0])
-        : toast.error(data.message);
+      data.success ? setData(data.blogs[0]) : toast.error(data.message);
     } catch (err) {
       console.error("Blog API Error:", err);
       toast.error(err.message);
@@ -93,25 +91,36 @@ export default function Blog() {
         ></div>
         {/* comments section */}
         <div className="mt-14 mb-10 max-w-3xl mx-auto">
-          <p>Comments({comments.length})</p>
+          <p className="mb-4 text-xl font-bold text-gray-800 ">
+            Comments({comments.length})
+          </p>
           <div className="flex flex-col gap-4">
             {comments.map((item, index) => (
               <div
                 key={index}
-                className="relative bg-primary/2 border border-primary/5 max-w-xl p-4 rounded text-gray-600"
+                className="relative max-w-xl rounded-2xl border border-gray-100 
+               bg-gradient-to-br from-white via-gray-50 to-gray-100 
+               p-5 shadow-md hover:shadow-lg transition-all duration-300"
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <img src={assets.user_icon} alt="" className="w-6" />
-                  <p className="font-medium">{item.name}</p>
+                <div className="flex items-center gap-3 mb-2">
+                  <img
+                    src={assets.user_icon}
+                    alt=""
+                    className="w-8 h-8 rounded-full bg-gray-200 p-1"
+                  />
+                  <p className="font-semibold text-gray-800">{item.name}</p>
                 </div>
-                <p className="text-sm max-w-md ml-8">{item.content}</p>
-                <div className="absolute right-4 bottom-3 flex item-center gap-2 text-x9">
-                  {Moment(item.createdAt).fromNow()}{" "}
+                <p className="text-sm text-gray-700 leading-relaxed ml-11">
+                  {item.content}
+                </p>
+                <div className="absolute right-4 bottom-3 text-xs text-gray-500 italic">
+                  {Moment(item.createdAt).fromNow()}
                 </div>
               </div>
             ))}
           </div>
         </div>
+
         {/* Add comment section */}
         <div className="max-w-3xl mx-auto">
           <p className="font-semibold mb-4">Add your comment</p>
@@ -125,15 +134,17 @@ export default function Blog() {
               type="text"
               placeholder="Name"
               required
-              className="w-full p-2 border border-gray-300 rounded outline-none"
+              className="w-full rounded-md border border-gray-300 p-3 text-gray-800 placeholder-gray-400 shadow-sm transition-all duration-200 ease-in-out focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
             />
+
             <textarea
               onChange={(e) => setContent(e.target.value)}
               value={content}
               placeholder="Comment"
-              className="w-full p-2 border border-gray-300 rounded outline-none h-32 resize-none"
               required
+              className="h-32 w-full resize-none rounded-md border border-gray-300  p-3 text-gray-800 placeholder-gray-400 shadow-sm transition-all duration-200 ease-in-out focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-purple-500/30"
             ></textarea>
+
             <button
               type="submit"
               className="bg-primary-600 text-white rounded p-2 px-8 hover:scale-105 hover:bg-primary-700 transition-all cursor-pointer"

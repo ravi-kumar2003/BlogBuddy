@@ -52,7 +52,7 @@ export default function Comments() {
           <thead className="text-xs text-gray-700 text-left uppercase">
             <tr>
               <th scope="col" className="px-6 py-3">
-                Blog Title &Comment
+                Blog Title & Comment
               </th>
               <th scope="col" className="px-6 py-3">
                 Date

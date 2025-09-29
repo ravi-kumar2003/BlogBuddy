@@ -61,13 +61,16 @@ export default function CommentTableItem({ comment, fetchComments }) {
       <td className="px-6 py-4 max-sm:hidden">
         <div className="inline-flex items-center gap-4">
           {!comment.isApproved ? (
-            <FcCheckmark onClick={approveComment} />
+            <FcCheckmark onClick={approveComment} className="cursor-pointer" />
           ) : (
             <p className="text-xs border border-green-600 rounded-full px-3 py-1">
               Approved
             </p>
           )}
-          <RiDeleteBin2Line onClick={deleteComment} />
+          <RiDeleteBin2Line
+            onClick={deleteComment}
+            className="cursor-pointer"
+          />
         </div>
       </td>
     </tr>

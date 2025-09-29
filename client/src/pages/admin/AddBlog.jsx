@@ -173,7 +173,7 @@ export default function AddBlog() {
           <input
             type="checkbox"
             checked={isPublished}
-            className="scale-125 cursor-pointer"
+            className="scale-125 cursor-pointer accent-green-500"
             onChange={(e) => setIsPublished(e.target.checked)}
           />
         </div>

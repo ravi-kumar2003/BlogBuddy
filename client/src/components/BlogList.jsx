@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { blog_data, blogCategories } from "../assets/assets";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import BlogCard from "./BlogCard";
 import { useAppContext } from "../context/AppContext";
 
@@ -26,8 +26,9 @@ export default function BlogList() {
           <div key={item} className="relative">
             <button
               onClick={() => setMenu(item)}
-              className={`cursor-pointer text-gray-500 ${
-                menu === item && "text-white px-4 pt-0.5"
+              className={`relative cursor-pointer text-gray-500 ${
+                menu === item &&
+                "text-white bg-primary-700 rounded-2xl px-4 pt-0.5"
               }`}
             >
               {item}
@@ -35,7 +36,7 @@ export default function BlogList() {
                 <motion.div
                   layoutId="underline"
                   transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  className="absolute left-0 right-0 top-0 h-7 -z-1 bg-primary-600 rounded-full"
+                  className="absolute left-0 right-0 top-0 h-7 -z-1 bg-primary-500 rounded-full"
                 ></motion.div>
               )}
             </button>

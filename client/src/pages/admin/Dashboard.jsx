@@ -4,23 +4,33 @@ import { AiOutlineComment } from "react-icons/ai";
 import { RiDraftLine } from "react-icons/ri";
 import { assets, dashboard_data } from "../../assets/assets";
 import BlogTableItem from "../../components/admin/BlogTableItem";
+import { useAppContext } from "../../context/AppContext";
+import toast from "react-hot-toast";
 
 export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState({
     blogs: 0,
     comments: 0,
     drafts: 0,
-    recentBlogs: []
+    recentBlogs: [],
   });
 
-  const fetchDashboard = () => {
-    setDashboardData(dashboard_data);
+  const { axios } = useAppContext();
+
+  const fetchDashboard = async () => {
+    try {
+      const { data } = await axios.get("/api/admin/dashboard");
+      data.success
+        ? setDashboardData(data.dashboardData)
+        : toast.error(data.message);
+    } catch (err) {
+      toast.error(err.message);
+    }
   };
 
-   useEffect(() => {
+  useEffect(() => {
     fetchDashboard();
   }, []);
-   
 
   return (
     <div className="flex-1 p-4 md:p-10 bg-violet-50">
@@ -47,7 +57,7 @@ export default function Dashboard() {
         </div>
         {/* Drafts */}
         <div className="flex items-center gap-4 bg-white p-4 min-w-[220px] rounded shadow cursor-pointer hover:scale-105 transition-transform">
-          <RiDraftLine  className="text-indigo-500 text-3xl" />
+          <RiDraftLine className="text-indigo-500 text-3xl" />
           <div>
             <p className="text-xl font-semibold text-gray-600">
               {dashboardData.drafts}
@@ -59,7 +69,7 @@ export default function Dashboard() {
 
       <div>
         <div className="flex items-center gap-3 m-4 mt-6 text-gray-600">
-          <img src={assets.dashboard_icon_4} alt=""/>
+          <img src={assets.dashboard_icon_4} alt="" />
           <p>Latest Blogs</p>
         </div>
 
@@ -67,16 +77,33 @@ export default function Dashboard() {
           <table className="w-full text-sm text-gray-500">
             <thead className="text-xs text-gray-600 text-left uppercase">
               <tr>
-                <th scope="col" className="px-2 py-4 xl:px-6">#</th>
-                <th scope="col" className="px-2 py-4">Blog title</th>
-                <th scope="col" className="px-2 py-4 max-sm:hidden">Date</th>
-                <th scope="col" className="px-2 py-4 max-sm:hidden">Status</th>
-                <th scope="col" className="px-2 py-4">Action</th>
+                <th scope="col" className="px-2 py-4 xl:px-6">
+                  #
+                </th>
+                <th scope="col" className="px-2 py-4">
+                  Blog title
+                </th>
+                <th scope="col" className="px-2 py-4 max-sm:hidden">
+                  Date
+                </th>
+                <th scope="col" className="px-2 py-4 max-sm:hidden">
+                  Status
+                </th>
+                <th scope="col" className="px-2 py-4">
+                  Action
+                </th>
               </tr>
             </thead>
             <tbody>
-              {dashboardData.recentBlogs.map((blog,index)=>{
-                return <BlogTableItem key={blog._id} blog={blog} fetchBlogs={fetchDashboard} index={index+1}/>
+              {dashboardData.recentBlogs.map((blog, index) => {
+                return (
+                  <BlogTableItem
+                    key={blog._id}
+                    blog={blog}
+                    fetchBlogs={fetchDashboard}
+                    index={index + 1}
+                  />
+                );
               })}
             </tbody>
           </table>

@@ -8,10 +8,10 @@ import FooterCom from "../components/FooterCom";
 import Loader from "../components/Loader";
 import toast from "react-hot-toast";
 import { useAppContext } from "../context/AppContext";
-import { jsx } from "react/jsx-runtime";
 
 export default function Blog() {
   const { id } = useParams();
+  console.log("Blog page received ID from URL:", id); 
 
   const { axios } = useAppContext();
 
@@ -25,7 +25,7 @@ export default function Blog() {
       const { data } = await axios.get(`/api/blog/${id}`);
       console.log("Blog API response:", data);
       data.success
-        ? setData(data.blog)
+        ? setData(data.blogs[0])
         : toast.error(data.message);
     } catch (err) {
       console.error("Blog API Error:", err);
@@ -82,7 +82,7 @@ export default function Blog() {
         </h1>
         <h2 className="my-5 max-w-lg truncate mx-auto">{data.subTitle}</h2>
         <p className="mx-auto w-fit py-1 px-4 rounded-full mb-6 border text-sm border-primary/35 bg-primary/5 font-medium text-primary-500">
-          Michael Brown
+          Ravi Kumar
         </p>
       </div>
       <div className="mx-5 max-w-5xl md:mx-auto my-10 mt-6">

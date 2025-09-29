@@ -1,7 +1,6 @@
 import React from "react";
 import { Button } from "flowbite-react";
 import logo from "../assets/logo.svg";
-import { useNavigate } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 
 export default function Navbar() {

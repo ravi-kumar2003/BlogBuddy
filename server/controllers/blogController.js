@@ -2,6 +2,7 @@ import fs from "fs";
 import imagekit from "../configs/imageKit.js";
 import Blog from "../models/Blog.js";
 import Comment from "../models/Comment.js";
+import main from "../configs/gemini.js";
 
 export const addBlog = async (req, res) => {
   try {
@@ -67,7 +68,7 @@ export const getBlogById = async (req, res) => {
     if (!blog) {
       return res.json({ success: false, message: "blog not found" });
     }
-    res.json({ success: true, blog });
+    res.json({ success: true, blogs: [blog] });
   } catch (err) {
     res.json({ success: false, message: err.message });
   }
@@ -123,3 +124,14 @@ export const getBlogComments = async (req, res) => {
     res.json({ success: false, message: err.message });
   }
 };
+
+export const generateContent=async(req,res)=>{
+  try{
+ const {prompt}=req.body;
+ const content=await main(prompt +'Generate a blog content for this topic')
+ res.json({success:true,content})
+  }catch(err){
+    res.json({ success: false, message: err.message });
+
+  }
+}

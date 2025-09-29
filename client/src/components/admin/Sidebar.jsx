@@ -6,7 +6,7 @@ import { NavLink } from "react-router-dom";
 
 export default function Sidebar() {
   return (
-    <div className='flex flex-col border-r border-gray-200 min-h-full pt-6'>
+    <div className='flex flex-col border-r border-gray-200 min-h-full pt-6 bg-fuchsia-50'>
       <NavLink
         end={true}
         to="/admin"

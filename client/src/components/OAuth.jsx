@@ -1,36 +1,36 @@
 import React from "react";
+import { FcGoogle } from "react-icons/fc";
 import { Button } from "flowbite-react";
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
-import { FcGoogle } from "react-icons/fc";
 import { app } from "../firebase";
-import { useDispatch } from "react-redux";
-import { signInSuccess } from "../redux/user/userSlice";
-import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
+// import { auth } from "../../../server/middleware/auth";
 
 export default function OAuth() {
   const auth = getAuth(app);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+
   const handleGoogleClick = async () => {
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
     try {
       const resultsFromGoogle = await signInWithPopup(auth, provider);
-      const res = await fetch("/api/auth/google", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: resultsFromGoogle.user.displayName,
-          email: resultsFromGoogle.user.email,
-          googlePhotoUrl: resultsFromGoogle.user.photoURL,
-        }),
+      const { email, password } = resultsFromGoogle.user;
+      console.log(resultsFromGoogle);
+      const { data } = await axios.post("/api/admin/login", {
+        email,
+        password,
       });
-      const data = await res.json();
-      if (res.ok) {
-        dispatch(signInSuccess(data));
-        navigate("/");
+      if (data.success) {
+        setToken(data.token);
+        localStorage.setItem("token", data.token);
+        axios.defaults.headers.common["Authorization"] = data.token;
+        Navigate("/");
+      } else {
+        toast.error(data.message);
       }
     } catch (err) {
+      toast.error(err.message);
       console.log(err);
     }
   };
@@ -39,7 +39,7 @@ export default function OAuth() {
     <Button
       type="button"
       outline
-      gradientDuoTone="purpleToPink"
+      className="w-full mt-3 py-3 font-medium flex items-center justify-center gap-2 bg-white text-gray-700 rounded cursor-pointer hover:bg-gray-100 transition-all shadow"
       onClick={handleGoogleClick}
     >
       <FcGoogle className="w-5 h-5 mx-4" />
